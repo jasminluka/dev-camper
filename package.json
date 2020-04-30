@@ -1,0 +1,20 @@
+{
+  "name": "dev-camper",
+  "version": "1.0.0",
+  "description": "A complete rest API for dev camper created with Express and MongoDB",
+  "main": "server",
+  "scripts": {
+    "start": "SET NODE_ENV=production&& node server",
+    "server": "nodemon server"
+  },
+  "author": "Jasmin Luka",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.11"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
