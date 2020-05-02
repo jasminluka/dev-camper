@@ -136,7 +136,7 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
   }
 
   // In order to trigger pre remove hook of mongoose since it doesnt work with findByIdAndDelete
-  bootcamp.remove();
+  await bootcamp.remove();
 
   res.status(200).json({
     success: true,
