@@ -101,6 +101,7 @@ const BootcampSchema = new mongoose.Schema({
   }
 }, {
   // Virtuals
+  // id: false,
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
 });
