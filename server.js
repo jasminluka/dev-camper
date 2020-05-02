@@ -22,6 +22,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/v1/bootcamps', require('./routes/api/v1/bootcamps'));
+app.use('/api/v1/courses', require('./routes/api/v1/courses'));
 
 app.use(errorHandler);
 

@@ -1,6 +1,6 @@
 const Bootcamp = require('../models/Bootcamp');
 const ErrorResponse = require('../utils/errorResponse');
-const asyncHandler = require('../middlewares/async');
+const asyncHandler = require('../utils/async');
 const geocoder = require('../utils/geocoder');
 
 // @route   GET api/v1/bootcamps
@@ -71,8 +71,8 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     count: bootcamps.length,
-    data: bootcamps,
-    pagination
+    pagination,
+    data: bootcamps
   });
 });
 
