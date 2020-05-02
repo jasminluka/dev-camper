@@ -99,6 +99,10 @@ const BootcampSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+}, {
+  // Virtuals
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
 
@@ -124,6 +128,23 @@ BootcampSchema.pre('save', async function(next) {
 
   // Do not save address on DB
   this.address = undefined;
+  next();
+});
+
+
+// Reverse populate with virtuals in a field courses
+BootcampSchema.virtual('courses', {
+  ref: 'Course',
+  localField: '_id',
+  foreignField: 'bootcamp', // A field in the course model that we want to partain to
+  justOne: false
+})
+
+
+// Cascade delete courses of a bootcamp when a bootcamp is deleted
+BootcampSchema.pre('remove', async function(next) {
+  await this.model('Course').deleteMany({ bootcamp: this._id });
+
   next();
 });
 

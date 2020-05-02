@@ -21,7 +21,8 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
 
   queryString = queryString.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
 
-  query = Bootcamp.find(JSON.parse(queryString));
+  // Finding resources
+  query = Bootcamp.find(JSON.parse(queryString)).populate('courses');
 
   // Select fields
   if (req.query.select) {
@@ -128,11 +129,14 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 // @desc    Delete bootcamp
 // @access  Private
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+  const bootcamp = await Bootcamp.findById(req.params.id);
 
   if (!bootcamp) {
     return next(new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404));
   }
+
+  // In order to trigger pre remove hook of mongoose since it doesnt work with findByIdAndDelete
+  bootcamp.remove();
 
   res.status(200).json({
     success: true,
