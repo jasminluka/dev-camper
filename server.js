@@ -29,6 +29,7 @@ app.use(fileupload());
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api/v1/auth', require('./routes/api/v1/auth'));
 app.use('/api/v1/bootcamps', require('./routes/api/v1/bootcamps'));
 app.use('/api/v1/courses', require('./routes/api/v1/courses'));
 
