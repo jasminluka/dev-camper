@@ -3,7 +3,8 @@ const router = express.Router({ mergeParams: true });
 const Review = require('../../../models/Review');
 
 const {
-  getReviews
+  getReviews,
+  getReview
 } = require('../../../controllers/reviews');
 
 const { protect, authorize } = require('../../../middlewares/auth');
@@ -15,5 +16,9 @@ router
     path: 'bootcamp',
     select: 'name description'
   }), getReviews);
+
+router
+  .route('/:id')
+  .get(getReview);
 
 module.exports = router;
