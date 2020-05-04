@@ -104,7 +104,7 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @route   DELETE api/v1/course/:id
+// @route   DELETE api/v1/courses/:id
 // @desc    Delete course
 // @access  Private
 exports.deleteCourse = asyncHandler(async (req, res, next) => {
