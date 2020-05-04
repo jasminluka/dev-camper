@@ -3,6 +3,8 @@ const express = require('express');
 const fileupload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 require('colors');
@@ -35,6 +37,12 @@ app.use(fileupload());
 // "email": {"$gt":""}, password": "123456"
 // Sanitize data / prevent NoSQL injection
 app.use(mongoSanitize());
+
+// Set security headers
+app.use(helmet());
+
+// Prevent XSS attacks
+app.use(xss());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
