@@ -5,6 +5,7 @@ require('colors');
 
 const Bootcamp = require('./models/Bootcamp');
 const Course = require('./models/Course');
+const Review = require('./models/Review');
 const User = require('./models/User');
 
 // Load env vars
@@ -23,6 +24,8 @@ const bootcamps = JSON.parse(fs.readFileSync(`${__dirname}/_data/bootcamps.json`
 
 const courses = JSON.parse(fs.readFileSync(`${__dirname}/_data/courses.json`, 'utf-8'));
 
+const reviews = JSON.parse(fs.readFileSync(`${__dirname}/_data/reviews.json`, 'utf-8'));
+
 const users = JSON.parse(fs.readFileSync(`${__dirname}/_data/users.json`, 'utf-8'));
 
 
@@ -31,6 +34,7 @@ const importData = async () => {
   try {
     await Bootcamp.create(bootcamps);
     await Course.create(courses);
+    await Review.create(reviews);
     await User.create(users);
 
     console.log('Data Imported...'.green.inverse);
@@ -47,6 +51,7 @@ const deleteData = async () => {
   try {
     await Bootcamp.deleteMany();
     await Course.deleteMany();
+    await Review.deleteMany();
     await User.deleteMany();
 
     console.log('Data Destroyed...'.red.inverse);
