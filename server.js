@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const fileupload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
+const mongoSanitize = require('express-mongo-sanitize');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 require('colors');
@@ -29,6 +30,11 @@ if (process.env.NODE_ENV === 'development') {
 
 // File uploading
 app.use(fileupload());
+
+// If i can guess somebodies password this will log that user in. The first user it finds on DB
+// "email": {"$gt":""}, password": "123456"
+// Sanitize data / prevent NoSQL injection
+app.use(mongoSanitize());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
