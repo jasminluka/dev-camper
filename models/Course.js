@@ -55,13 +55,25 @@ CourseSchema.statics.getAverageCost = async function(bootcampId) {
     }
   ]);
 
-  try {
-    await this.model('Bootcamp').findByIdAndUpdate(bootcampId, {
-      averageCost: Math.ceil(obj[0].averageCost / 10) * 10
-    });  
+  if (obj.length > 0) {
+    try {
+      await this.model('Bootcamp').findByIdAndUpdate(bootcampId, {
+        averageCost: Math.ceil(obj[0].averageCost / 10) * 10
+      });
+    }
+    catch (err) {
+      console.log(err);
+    }
   }
-  catch (err) {
-    console.log(err);
+  else {
+    try {
+      await this.model('Bootcamp').findByIdAndUpdate(bootcampId, {
+        averageCost: 0
+      });
+    }
+    catch (err) {
+      console.log(err);
+    }
   }
 }
 
@@ -70,8 +82,8 @@ CourseSchema.post('save', async function() {
   await this.constructor.getAverageCost(this.bootcamp);
 });
 
-// Call getAverageCost before remove
-CourseSchema.pre('remove', async function() {
+// Call getAverageCost after remove
+CourseSchema.post('remove', async function() {
   await this.constructor.getAverageCost(this.bootcamp);
 });
 
