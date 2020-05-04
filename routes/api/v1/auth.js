@@ -5,6 +5,7 @@ const {
   register,
   login,
   getMe,
+  logout,
   updateDetails,
   updatePassword,
   forgotPassword,
@@ -24,6 +25,10 @@ router
 router
   .route('/me')
   .get(protect, getMe);
+
+router
+  .route('/logout')
+  .get(logout);
 
 router
   .route('/updatedetails')
