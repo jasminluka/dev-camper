@@ -59,6 +59,27 @@ exports.getMe = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @route   GET api/v1/auth/forgotpassword
+// @desc    Forgot password
+// @access  Public
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(new ErrorResponse('There is no user with that email', 404));
+  }
+
+  // Get reset token
+  user.getResetPasswordToken();
+
+  await user.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    success: true,
+    data: user
+  });
+});
+
 
 
 
