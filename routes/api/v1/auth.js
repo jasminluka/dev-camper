@@ -5,6 +5,8 @@ const {
   register,
   login,
   getMe,
+  updateDetails,
+  updatePassword,
   forgotPassword,
   resetPassword
 } = require('../../../controllers/auth');
@@ -22,6 +24,14 @@ router
 router
   .route('/me')
   .get(protect, getMe);
+
+router
+  .route('/updatedetails')
+  .put(protect, updateDetails);
+
+router
+  .route('/updatepassword')
+  .put(protect, updatePassword);
 
 router
   .route('/forgotpassword')

@@ -61,7 +61,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @route   GET api/v1/auth/forgotpassword
+// @route   POST api/v1/auth/forgotpassword
 // @desc    Forgot password
 // @access  Public
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
@@ -123,10 +123,49 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Invalid token', 400));
   }
 
-  // Set ner password
+  // Set new password
   user.password = req.body.password;
   user.resetPasswordToken = undefined;
   user.resetPasswordExpire = undefined;
+
+  await user.save();
+
+  sendTokenResponse(user, 200, res);
+});
+
+// @route   PUT api/v1/auth/updatedetails
+// @desc    Update user details
+// @access  Private
+exports.updateDetails = asyncHandler(async (req, res, next) => {
+  // Dont allow password or role to update
+  const fieldsToUpdate = {
+    name: req.body.name,
+    email: req.body.email,
+  }
+
+  const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({
+    success: true,
+    data: user
+  });
+});
+
+// @route   PUT api/v1/auth/updatepassword
+// @desc    Update user password
+// @access  Private
+exports.updatePassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select('+password');
+
+  // Check current password
+  if (!(await user.matchPassword(req.body.currentPassword))) {
+    return next(new ErrorResponse('Password is incorrect', 401));
+  }
+
+  user.password = req.body.newPassword;
 
   await user.save();
 
